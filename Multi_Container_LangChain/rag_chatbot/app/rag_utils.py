@@ -6,7 +6,11 @@ from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv 
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain.schema.runnable import RunnablePassThrough 
+from langchain_core.runnables import (
+    RunnableLambda,
+    RunnableParallel,
+    RunnablePassthrough,
+)
 load_dotenv()
 groq_api = os.getenv("groq_api_key")
 
