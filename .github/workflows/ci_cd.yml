@@ -81,21 +81,21 @@ jobs:
             - name: Build and push Orchestrator
               uses: docker/build-push-action@v5
               with: 
-                context: ./Multi_container_langchain/Orchestrator
+                context: ./Template/Multi_container_langchain/Orchestrator
                 push: true
                 tags: ${{secrets.DOCKER_USERNAME}}/orchestrator:latest
             
             - name: Build and push RAG chatbot
               uses: docker/build-push-action@v5
               with:
-                context: ./Multi_container_langchain/rag_chatbot
+                context: ./Template/Multi_container_langchain/rag_chatbot
                 push: true
                 tags: ${{secrets.DOCKER_USERNAME}}/rag_chatbot:latest
             
             - name: Build and push Text-to-SQL
               uses: docker/build-push-action@v5
               with:
-                context: ./Multi_container_langchain/text_to_sql
+                context: ./Template/Multi_container_langchain/text_to_sql
                 push: true
                 tags: ${{secrets.DOCKER_USERNAME}}/text_to_sql:latest
                 
