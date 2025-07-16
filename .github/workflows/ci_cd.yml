@@ -1,0 +1,101 @@
+name : CI / CD Pipeline
+
+on: 
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main] 
+        
+jobs:
+    test-orchestrator:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.10'
+            - name: Install Dependencies
+              run: |
+                cd orchestrator
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            - name: Run tests
+              run: |
+                cd orchestrator
+                pytest tests/
+    
+    test-rag:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.10'
+            - name: Install Dependencies
+              run: |
+                cd rag_chatbot
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            - name: Run tests
+              run: |
+                cd rag_chatbot
+                pytest tests/
+    
+    test-text-to-sql:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.10'
+            - name: Install Dependencies
+              run: |
+                cd text_to_sql
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            - name: Run Tests
+              run: |
+                cd text_to_sql
+                pytest tests/
+    
+    build-and-push:
+        needs: [test-orchestrator , test-rag , test-text-to-sql]
+        runs-on: ubuntu-latest
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            
+            - name: Log in to Docker Hub
+              uses: docker/login-action@v3
+              with: 
+                username: ${{secrets.DOCKER_USERNAME}}
+                password: ${{secrets.DOCKER_PASSWORD}}
+            
+            - name: Build and push Orchestrator
+              uses: docker/build-push-action@v5
+              with: 
+                context: ./orchestrator
+                push: true
+                tags: ${{secrets.DOCKER_USERNAME}}/orchestrator:latest
+            
+            - name: Build and push RAG chatbot
+              uses: docker/build-push-action@v5
+              with:
+                context: ./ragchatbot
+                push: true
+                tags: ${{secrets.DOCKER_USERNAME}}/rag_chatbot:latest
+            
+            - name: Build and push Text-to-SQL
+              uses: docker/build-push-action@v5
+              with:
+                context: ./text_to_sql
+                push: true
+                tags: ${{secrets.DOCKER_USERNAME}}/text_to_sql:latest
+                
