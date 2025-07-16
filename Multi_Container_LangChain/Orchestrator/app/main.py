@@ -4,6 +4,7 @@ from orchestrator import route_query
 import logging
 import os
 from dotenv import load_dotenv
+import uvicorn 
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -18,7 +19,7 @@ class QueryResponse(BaseModel):
     result:str
     service:str
 
-@app.post("/process",response_mode=QueryResponse)
+@app.post("/process",response_model=QueryResponse)
 async def process_query(input:QueryInput):
     try:
         result , service = await route_query(input.query)
@@ -32,4 +33,5 @@ async def process_query(input:QueryInput):
 async def health_check():
     return {"status":"healthy"}
 
-
+# if __name__ == "__main__":
+#     uvicorn.run(app,host="0.0.0.0",port = 5000)

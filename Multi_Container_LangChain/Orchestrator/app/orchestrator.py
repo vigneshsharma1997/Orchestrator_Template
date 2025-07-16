@@ -4,16 +4,22 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv 
-
-groq_api_key = os.getenv("groq_api_key")
+load_dotenv()
+groq_api = os.getenv("groq_api_key")
+print(groq_api)
 async def route_query(query):
-    llm = ChatGroq(model = "Gemma-9b-It",groq_api_key=groq_api_key)
+    llm = ChatGroq(model = "Gemma2-9b-It",groq_api_key=groq_api)
+    print("Inside Route Query")
     prompt = ChatPromptTemplate.from_template(
         "Determine if the query is asking for general information RAG or a Database Query SQL."
         "Return 'RAG' or 'SQL' . Query :{query}"
     )
-    chain = prompt|llm|StrOutputParser()
+    parser = StrOutputParser()
+    chain = prompt|llm|parser
+
     intent = chain.invoke({"query":query})
+    print("Intent : ",intent)
+
     async with httpx.AsyncClient() as client:
         if intent.content.strip() == "SQL":
             response = await client.post(
