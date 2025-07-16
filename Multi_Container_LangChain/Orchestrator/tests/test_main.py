@@ -9,7 +9,7 @@ def test_health_check():
     
 
 def test_process_query():
-    response = client.get("/process") , json = {"query":"What is LangChain"}
+    response = client.get("/process",json = {"query":"What is LangChain"})
     assert response.status_code == 200
     assert "result" in response.json()
     assert "service" in response.json()
