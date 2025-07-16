@@ -82,6 +82,7 @@ jobs:
               uses: docker/build-push-action@v5
               with: 
                 context: ./Multi_Container_LangChain/Orchestrator
+                file: ./Multi_Container_LangChain/rag_chatbot/DockerFile
                 push: true
                 tags: ${{secrets.DOCKER_USERNAME}}/orchestrator:latest
             
@@ -89,6 +90,7 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                 context: ./Multi_Container_LangChain/rag_chatbot
+                file: ./Multi_Container_LangChain/rag_chatbot/DockerFile
                 push: true
                 tags: ${{secrets.DOCKER_USERNAME}}/rag_chatbot:latest
             
@@ -96,6 +98,7 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                 context: ./Multi_Container_LangChain/text_to_sql
+                file: ./Multi_Container_LangChain/text_to_sql/DockerFile
                 push: true
                 tags: ${{secrets.DOCKER_USERNAME}}/text_to_sql:latest
                 
