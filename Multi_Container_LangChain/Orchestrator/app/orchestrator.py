@@ -30,7 +30,7 @@ async def route_query(query):
             return response.json()["sql_query"] , "text_to_sql"
         else:
             response = await client.post(
-                f"{os.getenv("RAG_URL")}/ask",
+                f"{os.getenv('RAG_URL')}/ask",
                 json = {"question":query}
             )
             response.raise_for_status()
