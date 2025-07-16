@@ -23,7 +23,7 @@ jobs:
                 pip install -r requirements.txt
             - name: Run tests
               run: |
-                cd orchestrator
+                cd Multi_Container_LangChain/orchestrator
                 pytest tests/
     
     test-rag:
@@ -42,7 +42,7 @@ jobs:
                 pip install -r requirements.txt
             - name: Run tests
               run: |
-                cd rag_chatbot
+                cd Multi_Container_LangChain/rag_chatbot
                 pytest tests/
     
     test-text-to-sql:
@@ -61,7 +61,7 @@ jobs:
                 pip install -r requirements.txt
             - name: Run Tests
               run: |
-                cd text_to_sql
+                cd Multi_Container_LangChain/text_to_sql
                 pytest tests/
     
     build-and-push:
