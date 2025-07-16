@@ -1,6 +1,6 @@
 from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel
-from orchestrator import route_query
+from app.orchestrator import route_query
 import logging
 import os
 from dotenv import load_dotenv

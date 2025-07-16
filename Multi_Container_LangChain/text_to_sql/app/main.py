@@ -2,7 +2,7 @@ from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel
 import logging
 import os
-from sql_generator import generate_sql
+from app.sql_generator import generate_sql
 from dotenv import load_dotenv
 import uvicorn 
 
