@@ -21,6 +21,7 @@ class SQLResponse(BaseModel):
 @app.post("/generate",response_model=SQLResponse)
 async def generate_sql_query(input:QueryInput):
     try:
+        
         sql_query = generate_sql(input.query)
         logger.info(f"Query {input.query}, SQL: {sql_query}")
         return {"SQL": sql_query}
